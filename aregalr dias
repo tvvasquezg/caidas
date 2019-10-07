@@ -1,0 +1,14 @@
+filename = "DATOSCAIDA.txt"
+char2 = ']\n'
+char1 = ']'
+
+filer = open(filename, "r")
+filew = open(filename, "w")
+
+buff = filer.read()
+rbuff = buff.replace(char1, char2)
+
+filew.write(rbuff)
+
+filer.close()
+filew.close()

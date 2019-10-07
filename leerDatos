@@ -1,0 +1,118 @@
+# Esto solo corre localmente, no sirve en codeblock
+import socket
+import time
+import csv
+import smtplib
+from email.mime.text import MIMEText
+
+username = 'tanifloyd@gmail.com'
+password = 'Tania11Vanesav'
+
+def caida(username,password,data):
+    smtp_ssl_host = 'smtp.gmail.com'  # smtp.mail.yahoo.com
+    smtp_ssl_port = 465
+#ddamarisr@unal.edu.co
+    sender   = 'SISTEMA DE CAIDAS'
+    targets = ['tvvasquezg@gmail.com', 'tvvasquezg@unal.edu.co','tvcastillod@unal.edu.co']
+
+    msg = MIMEText('Hi, how are you today?, your parent old is fall '+str(data))
+    msg['Subject'] = ('Hello Emergency'+str(data[5]))
+    msg['From'] = sender
+    msg['To'] = ', '.join(targets)
+
+    server = smtplib.SMTP_SSL(smtp_ssl_host, smtp_ssl_port)
+    server.login(username, password)
+    server.sendmail(sender, targets, msg.as_string())
+    print("Envado mensaje")
+    server.quit()
+
+
+
+IP = "192.168.1.8" #"192.168.43.156" #0.14 se debe buscar la ip del computador y ponerla aquí
+PORT = 5558 #utilizar el mismo número de puerto tanto en el celular como en el computador
+DECIMALS = 3
+
+# Start socket server.
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.bind((IP, PORT))
+print("Esperando datos...")
+
+contador = 0
+FRAMES = 20 #número de datos a tomar
+
+start_time = time.time()
+datos = [13]
+tempora = ""
+temtem = 0
+temtem2 = 0
+fc=1
+#archivo-salida.py
+
+
+while True:
+
+    while contador < FRAMES:
+
+        # Recieve data from socket.
+        data_cellphone, addr = sock.recvfrom(2048) # buffer size is 1024 bytes.
+        #print((data_cellphone.split(',')))
+        info = str(data_cellphone, 'utf-8')
+
+        #print(info.split(","))
+        tempora = info.split(",")
+        for i in range(0, len(tempora)):
+            tempora[i] = float(tempora[i])
+        print("****************************")
+        #tempora= tempora.split()
+
+        print("Estos son los datos: ",tempora)
+        print("-----------------------")
+        print(((tempora[2])**2)*0.1)
+        print(((tempora[3])**2)*0.1)
+        print(((tempora[4])**2)*0.1)
+        def cua(a):
+            return((a**2)*0.1)
+        aceleraci = abs((cua(tempora[2])+cua(tempora[3])+cua(tempora[4]))**(1/2))
+
+        if(aceleraci>10):
+            print("-----------------------**************************************_________________")
+
+            print(aceleraci)
+            print("-----------------------**************************************_________________")
+
+            from datetime import datetime
+            dt = datetime.now()
+            temtem = float(dt.microsecond)
+
+
+            print(dt.microsecond)
+            #v=dt.microsecond)+30);
+            #dt.microsecond()
+            print("diferenciiiiiiia",(temtem/1000)-(temtem2/1000))
+            if((temtem/1000)-(temtem2/1000)<1000):# and (temtem/1000)-(temtem2/1000)<70 ):
+                f = open ('DATOcai1.txt','a')
+                print(" es Caida ",)
+                #tempora.insert(fc,6)
+                f.write(str(tempora[0:5])+"\n")
+                f.close()
+                fc+=1
+                data = tempora[0:5]
+                data.append(str(datetime.now()))
+                print(type(data[5]))
+                data = str(data)
+                print(data)
+                caida(username,password,(data))
+            else:
+                f = open ('DATOcai1.txt','a')
+                f.write("\n")
+
+
+                #f.close()
+            temtem2 = temtem
+
+
+
+
+
+
+    count+=1
